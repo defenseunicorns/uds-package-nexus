@@ -7,6 +7,7 @@ tasks:
     description: Create the UDS bundle with Nexus and its dependencies
     actions:
       - task: nexus-package
+      - task: dependency-package
       - cmd: uds create bundle --confirm --no-progress --architecture=${UDS_ARCH}
 
   - name: dependency-package
