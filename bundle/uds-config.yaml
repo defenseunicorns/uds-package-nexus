@@ -1,0 +1,8 @@
+options:
+  log_level: trace
+variables:
+  dev-postgres:
+    db_username: "nexus"
+    db_name: "nexusdb"
+  nexus:
+    nexus_db_endpoint: "postgresql.dev-postgres.svc.cluster.local"

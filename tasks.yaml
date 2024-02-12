@@ -1,0 +1,40 @@
+includes:
+  - teardown: ./tasks/cleanup.yaml
+  - create: ./tasks/create.yaml
+  - deploy: ./tasks/deploy.yaml
+  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common-tasks/main/tasks/setup.yaml
+  - test: ./tasks/test.yaml
+
+tasks:
+  - name: setup-cluster
+    actions:
+      - task: setup:k3d-test-cluster
+
+  - name: create-dependency-package
+    actions:
+      - task: create:dependency-package
+
+  - name: create-package
+    actions:
+      - task: create:nexus-package
+
+  - name: create-test-bundle
+    actions:
+      - task: create:nexus-test-bundle
+
+  - name: deploy-package
+    actions:
+      - task: deploy:nexus-package
+
+  - name: deploy-test-bundle
+    actions:
+      - task: deploy:nexus-test-bundle
+
+  - name: test-package
+    actions:
+      - task: test:health-check
+      - task: test:ingress
+
+  - name: cleanup
+    actions:
+      - task: teardown:destroy

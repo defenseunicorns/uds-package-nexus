@@ -1,0 +1,18 @@
+tasks:
+  - name: health-check
+    actions:
+      - description: Nexus StatefulSet Health Check
+        wait:
+          cluster:
+            kind: Deploy
+            name: nexus-nexus-repository-manager
+            namespace: nexus
+
+  - name: ingress
+    actions:
+      - description: Nexus UI Health Check
+        wait:
+          network:
+            protocol: https
+            address: nexus.uds.dev
+            code: 200

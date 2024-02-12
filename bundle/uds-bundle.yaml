@@ -1,0 +1,27 @@
+kind: UDSBundle
+metadata:
+  name: nexus-test
+  description: A UDS bundle for deploying nexus and it's dependencies on a development cluster
+  # x-release-please-start-version
+  version: 3.64.0-uds.0
+  # x-release-please-end
+
+packages:
+  - name: dev-postgres
+    repository: ghcr.io/defenseunicorns/packages/uds/dev-postgres
+    ref: 0.0.2
+
+  - name: dev-secrets
+    path: ../
+    ref: 0.0.1
+    exports:
+      - name: POSTGRES_DB_PASSWORD
+
+  - name: nexus
+    path: ../
+    # x-release-please-start-version
+    ref: 3.64.0-uds.0
+    # x-release-please-end
+    imports:
+      - name: POSTGRES_DB_PASSWORD
+        package: dev-secrets
