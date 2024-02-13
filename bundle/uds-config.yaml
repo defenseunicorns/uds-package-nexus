@@ -1,5 +1,5 @@
 options:
-  log_level: trace
+  log_level: info
 variables:
   dev-postgres:
     db_username: "nexus"

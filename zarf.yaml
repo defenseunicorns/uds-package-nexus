@@ -18,7 +18,7 @@ variables:
   - name: POSTGRES_DB_PASSWORD
     default: "password"
   - name: DOMAIN
-    default: "bigbang.dev"
+    default: "uds.dev"
   - name: NEXUS_LICENSE_KEY
     default: ""
     autoIndent: true
