@@ -62,6 +62,30 @@ jobs:
       - name: Test package
         run: uds run test-package
 
+      - name: Print cluster info
+      if: failure()
+      shell: bash -e -o pipefail {0}
+      run: |
+        kubectl get nodes -o wide
+
+      - name: Print pod info
+        if: failure()
+        shell: bash -e -o pipefail {0}
+        run: |
+          kubectl get pods -A -o wide
+
+      - name: Print service info
+        if: failure()
+        shell: bash -e -o pipefail {0}
+        run: |
+          kubectl get svc -A -o wide
+
+      - name: Print events
+        if: failure()
+        shell: bash -e -o pipefail {0}
+        run: |
+          kubectl get events -A -o wide
+
       - name: Cleanup
         if: always()
         run: uds run cleanup
