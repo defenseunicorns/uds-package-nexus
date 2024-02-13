@@ -6,9 +6,9 @@ metadata:
 spec:
   network:
     expose:
-      - service: nexus
+      - service: nexus-nexus-repository-manager
         podLabels:
-          app: nexus
+          app: nexus-repository-manager
         gateway: tenant
         host: nexus
         port: 8081
