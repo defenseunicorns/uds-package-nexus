@@ -53,15 +53,6 @@ jobs:
       - name: Deploy test bundle
         run: uds run deploy-test-bundle
 
-      - name: Get Cluster Info
-        if: always()
-        uses: ./.github/actions/get-cluster-info
-        with:
-          artifact-suffix: ${{ matrix.flavor }}-${{ github.sha }}
-
-      - name: Test package
-        run: uds run test-package
-
       - name: Print cluster info
         if: failure()
         shell: bash -e -o pipefail {0}
@@ -85,6 +76,15 @@ jobs:
         shell: bash -e -o pipefail {0}
         run: |
           kubectl get events -A -o wide
+
+      - name: Get Cluster Info
+        if: always()
+        uses: ./.github/actions/get-cluster-info
+        with:
+          artifact-suffix: ${{ matrix.flavor }}-${{ github.sha }}
+
+      - name: Test package
+        run: uds run test-package
 
       - name: Cleanup
         if: always()
