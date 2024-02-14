@@ -25,3 +25,11 @@ packages:
     imports:
       - name: POSTGRES_DB_PASSWORD
         package: dev-secrets
+    overrides:
+      nexus:
+        nexus:
+          values:
+            - path: "nexus.resources.requests.cpu"
+              value: "1"
+            - path: "nexus.resources.requests.memory"
+              value: "2Gi"
