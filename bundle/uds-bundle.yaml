@@ -3,7 +3,7 @@ metadata:
   name: nexus-test
   description: A UDS bundle for deploying nexus and it's dependencies on a development cluster
   # x-release-please-start-version
-  version: 3.64.0-uds.0
+  version: 3.64.0-uds.1
   # x-release-please-end
 
 packages:
@@ -20,7 +20,7 @@ packages:
   - name: nexus
     path: ../
     # x-release-please-start-version
-    ref: 3.64.0-uds.0
+    ref: 3.64.0-uds.1
     # x-release-please-end
     imports:
       - name: POSTGRES_DB_PASSWORD
