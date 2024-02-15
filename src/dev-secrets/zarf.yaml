@@ -16,10 +16,3 @@ components:
             setVariables:
               - name: POSTGRES_DB_PASSWORD
                 sensitive: true
-  - name: nexus-postgres
-    required: true
-    manifests:
-      - name: nexus-postgres
-        namespace: nexus
-        files:
-          - postgres-secret.yaml
