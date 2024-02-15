@@ -1,0 +1,48 @@
+domain: ###ZARF_VAR_DOMAIN###
+hostname: nexus
+
+openshift: false
+
+image:
+  pullPolicy: IfNotPresent
+
+job_image:
+  pullPolicy: IfNotPresent
+
+# External database
+custom_admin_password: ###ZARF_VAR_POSTGRES_DB_PASSWORD###
+
+nexus:
+  imagePullSecrets:
+    - name: private-registry
+  properties:
+    override: true
+    data:
+      nexus.datastore.enabled: true
+  env:
+    - name: NEXUS_DATASTORE_NEXUS_JDBCURL
+      value: jdbc:postgresql://###ZARF_VAR_NEXUS_DB_ENDPOINT###:5432/###ZARF_VAR_NEXUS_DB_NAME###
+    - name: NEXUS_DATASTORE_NEXUS_USERNAME
+      value: ###ZARF_VAR_NEXUS_DB_USERNAME###
+    - name: NEXUS_DATASTORE_NEXUS_PASSWORD
+      value: ###ZARF_VAR_POSTGRES_DB_PASSWORD###
+
+license_key: |
+  ###ZARF_VAR_NEXUS_LICENSE_KEY###
+
+sso:
+  enabled: ###ZARF_VAR_NEXUS_SSO_ENABLED###
+  idp_data:
+    entityId: ###ZARF_VAR_NEXUS_SSO_IDP_ENTITY_ID###
+    usernameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_USERNAME_ATTRIBUTE###
+    firstNameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_FIRSTNAME_ATTRIBUTE###
+    lastNameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_LASTNAME_ATTRIBUTE###
+    emailAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_EMAIL_ATTRIBUTE###
+    groupsAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_GROUPS_ATTRIBUTE###
+    validateResponseSignature: ###ZARF_VAR_NEXUS_SSO_IDP_VALIDATE_RESPONSE_SIGNATURE###
+    validateAssertionSignature: ###ZARF_VAR_NEXUS_SSO_IDP_VALIDATE_ASSERTION_SIGNATURE###
+    idpMetadata: ###ZARF_VAR_NEXUS_SSO_IDP_METADATA###
+  realm:
+    ###ZARF_VAR_NEXUS_SSO_REALM###
+  role:
+    ###ZARF_VAR_NEXUS_SSO_ROLE###

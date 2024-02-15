@@ -1,0 +1,19 @@
+apiVersion: uds.dev/v1alpha1
+kind: Package
+metadata:
+  name: nexus
+  namespace: {{ .Release.Namespace }}
+spec:
+  network:
+    expose:
+      - service: nexus-nexus-repository-manager
+        podLabels:
+          app: nexus-repository-manager
+        gateway: tenant
+        host: nexus
+        port: 8081
+    allow:
+      - direction: Egress
+        podLabels:
+          app: nexus
+        remoteGenerated: Anywhere
