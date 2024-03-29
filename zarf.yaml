@@ -15,7 +15,7 @@ variables:
     default: nexus
   - name: NEXUS_DB_ENDPOINT
     default: "postgres"
-  - name: POSTGRES_DB_PASSWORD
+  - name: NEXUS_DB_PASSWORD
     default: "password"
   - name: DOMAIN
     default: "uds.dev"
@@ -59,7 +59,7 @@ components:
       # renovate: bb-chart
       - name: nexus
         url: https://repo1.dso.mil/big-bang/product/packages/nexus.git
-        version: "64.0.0-bb.0"
+        version: "66.0.0-bb.0"
         gitPath: chart
         namespace: nexus
         valuesFiles:
@@ -70,4 +70,4 @@ components:
         localPath: chart
     images:
       - registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.3
-      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.64.0-03
+      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.66.0-02

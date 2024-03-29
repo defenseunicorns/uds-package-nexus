@@ -10,7 +10,7 @@ job_image:
   pullPolicy: IfNotPresent
 
 # External database
-custom_admin_password: ###ZARF_VAR_POSTGRES_DB_PASSWORD###
+custom_admin_password: ###ZARF_VAR_NEXUS_DB_PASSWORD###
 
 nexus:
   imagePullSecrets:
@@ -25,7 +25,7 @@ nexus:
     - name: NEXUS_DATASTORE_NEXUS_USERNAME
       value: ###ZARF_VAR_NEXUS_DB_USERNAME###
     - name: NEXUS_DATASTORE_NEXUS_PASSWORD
-      value: ###ZARF_VAR_POSTGRES_DB_PASSWORD###
+      value: ###ZARF_VAR_NEXUS_DB_PASSWORD###
 
 license_key: |
   ###ZARF_VAR_NEXUS_LICENSE_KEY###

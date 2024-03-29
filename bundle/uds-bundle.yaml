@@ -15,7 +15,7 @@ packages:
     path: ../
     ref: 0.1.0
     exports:
-      - name: POSTGRES_DB_PASSWORD
+      - name: NEXUS_DB_PASSWORD
 
   - name: nexus
     path: ../
@@ -23,7 +23,7 @@ packages:
     ref: 3.64.0-uds.1
     # x-release-please-end
     imports:
-      - name: POSTGRES_DB_PASSWORD
+      - name: NEXUS_DB_PASSWORD
         package: dev-secrets
     overrides:
       nexus:
