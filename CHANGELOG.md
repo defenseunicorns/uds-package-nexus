@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.64.0-uds.2](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.64.0-uds.1...v3.64.0-uds.2) (2024-03-29)
+
+
+### Miscellaneous
+
+* update nexus chart to 66.0.0-bb.0 ([#5](https://github.com/defenseunicorns/uds-package-nexus/issues/5)) ([db64491](https://github.com/defenseunicorns/uds-package-nexus/commit/db64491c346c354474508f865aa4b32839a283a7))
+* update nexus db password var ([db64491](https://github.com/defenseunicorns/uds-package-nexus/commit/db64491c346c354474508f865aa4b32839a283a7))
+
 ## [3.64.0-uds.1](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.64.0-uds.0...v3.64.0-uds.1) (2024-02-15)
 
 
