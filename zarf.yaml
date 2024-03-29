@@ -15,7 +15,7 @@ variables:
     default: nexus
   - name: NEXUS_DB_ENDPOINT
     default: "postgres"
-  - name: POSTGRES_DB_PASSWORD
+  - name: NEXUS_DB_PASSWORD
     default: "password"
   - name: DOMAIN
     default: "uds.dev"
