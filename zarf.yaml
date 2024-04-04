@@ -48,6 +48,10 @@ variables:
   - name: NEXUS_SSO_ROLE
     default: "[]"
     autoIndent: true
+  - name: NEXUS_VM_PARAMS
+    default: "-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
+  - name: NEXUS_SECURITY_RANDOMPASSWORD
+    default: "true"
 
 components:
   - name: nexus
