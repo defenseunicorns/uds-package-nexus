@@ -26,6 +26,10 @@ nexus:
       value: ###ZARF_VAR_NEXUS_DB_USERNAME###
     - name: NEXUS_DATASTORE_NEXUS_PASSWORD
       value: ###ZARF_VAR_NEXUS_DB_PASSWORD###
+    - name: INSTALL4J_ADD_VM_PARAMS
+      value: ###ZARF_VAR_NEXUS_VM_PARAMS###
+    - name: NEXUS_SECURITY_RANDOMPASSWORD
+      value: "###ZARF_VAR_NEXUS_SECURITY_RANDOMPASSWORD###"
 
 license_key: |
   ###ZARF_VAR_NEXUS_LICENSE_KEY###
