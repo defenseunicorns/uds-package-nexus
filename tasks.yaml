@@ -1,37 +1,35 @@
+variables:
+  # I can't name this FLAVOR. How can I override this here for the imported create task? I don't want to call --set
+  # - name: NEW_DEFAULT_FLAVOR
+  #   default: registry1
+
 includes:
   - teardown: ./tasks/cleanup.yaml
-  - create: ./tasks/create.yaml
-  - deploy: ./tasks/deploy.yaml
-  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.3.9/tasks/setup.yaml
+  - dependencies: ./tasks/dependencies.yaml
   - test: ./tasks/test.yaml
+  - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/create.yaml
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/deploy.yaml
+  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/setup.yaml
 
 tasks:
-  - name: setup-cluster
-    actions:
-      - task: setup:k3d-test-cluster
-
-  - name: create-dependency-package
-    actions:
-      - task: create:dependency-package
-
   - name: create-package
     actions:
-      - task: create:nexus-package
+      # - cmd: echo "${NEW_DEFAULT_FLAVOR}"
+      #   setVariables:
+      #     - name: FLAVOR
+      - task: create:package
 
   - name: create-test-bundle
     actions:
-      - task: create:nexus-test-bundle
-
-  - name: deploy-package
-    actions:
-      - task: deploy:nexus-package
-
-  - name: deploy-test-bundle
-    actions:
-      - task: deploy:nexus-test-bundle
+      - task: create-package
+      - task: dependencies:create
+      - task: create:test-bundle
 
   - name: test-package
     actions:
+      - task: create-test-bundle
+      - task: setup:k3d-test-cluster
+      - task: deploy:test-bundle
       - task: test:health-check
       - task: test:ingress
 
