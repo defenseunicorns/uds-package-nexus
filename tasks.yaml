@@ -1,38 +1,67 @@
-variables:
-  # I can't name this FLAVOR. How can I override this here for the imported create task? I don't want to call --set
-  # - name: NEW_DEFAULT_FLAVOR
-  #   default: registry1
-
 includes:
   - teardown: ./tasks/cleanup.yaml
   - dependencies: ./tasks/dependencies.yaml
   - test: ./tasks/test.yaml
   - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/create.yaml
+  - lint: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/lint.yaml
+  - pull: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/pull.yaml
   - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/deploy.yaml
   - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/setup.yaml
 
 tasks:
-  - name: create-package
+  - name: default
+    description: Create K3D Cluster with UDS-Core (Dev) and Nexus
     actions:
-      # - cmd: echo "${NEW_DEFAULT_FLAVOR}"
-      #   setVariables:
-      #     - name: FLAVOR
+      - task: create-nexus-test-bundle
+      - task: setup:k3d-test-cluster
+      - task: deploy:test-bundle
+
+  - name: create-nexus-package
+    actions:
       - task: create:package
 
-  - name: create-test-bundle
+  - name: create-nexus-test-bundle
     actions:
-      - task: create-package
+      - task: create-nexus-package
       - task: dependencies:create
       - task: create:test-bundle
 
+  - name: create-nexus-latest-release-bundle
+    description: Create UDS Nexus bundle based on the latest release
+    actions:
+      - task: pull:latest-package-release
+        with:
+          spoof_release: "true"
+      - task: dependencies:create
+      - task: create:test-bundle
+
+  - name: dev
+    description: Create and deploy the bundle against an existing cluster
+    actions:
+      - task: create-nexus-test-bundle
+      - task: deploy:test-bundle
+
+  - name: cleanup
+    actions:
+      - task: teardown:destroy
+
+# CI will execute the following (via uds-common/.github/actions/test) so they need to be here with these names
+
   - name: test-package
     actions:
-      - task: create-test-bundle
+      - task: create-nexus-test-bundle
       - task: setup:k3d-test-cluster
       - task: deploy:test-bundle
       - task: test:health-check
       - task: test:ingress
 
-  - name: cleanup
+  - name: test-upgrade
+    description: Test an upgrade from the latest released package to the current branch
     actions:
-      - task: teardown:destroy
+      - task: create-nexus-latest-release-bundle
+      - task: setup:k3d-test-cluster
+      - task: deploy:test-bundle
+      - task: create-nexus-test-bundle
+      - task: deploy:test-bundle
+      - task: test:health-check
+      - task: test:ingress
