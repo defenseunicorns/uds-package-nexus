@@ -1,40 +1,67 @@
 includes:
   - teardown: ./tasks/cleanup.yaml
-  - create: ./tasks/create.yaml
-  - deploy: ./tasks/deploy.yaml
-  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.3.9/tasks/setup.yaml
+  - dependencies: ./tasks/dependencies.yaml
   - test: ./tasks/test.yaml
+  - create: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/create.yaml
+  - lint: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/lint.yaml
+  - pull: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/pull.yaml
+  - deploy: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/deploy.yaml
+  - setup: https://raw.githubusercontent.com/defenseunicorns/uds-common/v0.4.2/tasks/setup.yaml
 
 tasks:
-  - name: setup-cluster
+  - name: default
+    description: Create K3D Cluster with UDS-Core (Dev) and Nexus
     actions:
+      - task: create-nexus-test-bundle
       - task: setup:k3d-test-cluster
+      - task: deploy:test-bundle
 
-  - name: create-dependency-package
+  - name: create-nexus-package
     actions:
-      - task: create:dependency-package
+      - task: create:package
 
-  - name: create-package
+  - name: create-nexus-test-bundle
     actions:
-      - task: create:nexus-package
+      - task: create-nexus-package
+      - task: dependencies:create
+      - task: create:test-bundle
 
-  - name: create-test-bundle
+  - name: create-nexus-latest-release-bundle
+    description: Create UDS Nexus bundle based on the latest release
     actions:
-      - task: create:nexus-test-bundle
+      - task: pull:latest-package-release
+        with:
+          spoof_release: "true"
+      - task: dependencies:create
+      - task: create:test-bundle
 
-  - name: deploy-package
+  - name: dev
+    description: Create and deploy the bundle against an existing cluster
     actions:
-      - task: deploy:nexus-package
-
-  - name: deploy-test-bundle
-    actions:
-      - task: deploy:nexus-test-bundle
-
-  - name: test-package
-    actions:
-      - task: test:health-check
-      - task: test:ingress
+      - task: create-nexus-test-bundle
+      - task: deploy:test-bundle
 
   - name: cleanup
     actions:
       - task: teardown:destroy
+
+# CI will execute the following (via uds-common/.github/actions/test) so they need to be here with these names
+
+  - name: test-package
+    actions:
+      - task: create-nexus-test-bundle
+      - task: setup:k3d-test-cluster
+      - task: deploy:test-bundle
+      - task: test:health-check
+      - task: test:ingress
+
+  - name: test-upgrade
+    description: Test an upgrade from the latest released package to the current branch
+    actions:
+      - task: create-nexus-latest-release-bundle
+      - task: setup:k3d-test-cluster
+      - task: deploy:test-bundle
+      - task: create-nexus-test-bundle
+      - task: deploy:test-bundle
+      - task: test:health-check
+      - task: test:ingress
