@@ -52,14 +52,14 @@ jobs:
           registry1Password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
           ghToken: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Test
         uses: defenseunicorns/uds-common/.github/actions/test@b2e8b25930c953ef893e7c787fe350f0d8679ee2 # v0.4.2
         with:
           flavor: ${{ matrix.flavor }}
           type: ${{ matrix.type }}
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Save logs
         if: always()
