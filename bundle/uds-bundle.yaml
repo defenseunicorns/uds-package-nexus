@@ -41,6 +41,10 @@ packages:
         nexus:
           values:
             - path: "nexus.resources.requests.cpu"
-              value: "1"
+              value: "500m"
             - path: "nexus.resources.requests.memory"
+              value: "2Gi"
+            - path: "nexus.resources.limits.cpu"
+              value: "500m"
+            - path: "nexus.resources.limits.memory"
               value: "2Gi"

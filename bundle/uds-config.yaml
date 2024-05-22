@@ -9,9 +9,9 @@ variables:
         size: "10Gi"
       numberOfInstances: 2
       users:
-        nexus: []  # database owner
+        nexus.nexus: []  # database owner
       databases:
-        nexusdb: nexus
+        nexusdb: nexus.nexus
       version: "13"
       ingress:
         remoteGenerated: Anywhere
