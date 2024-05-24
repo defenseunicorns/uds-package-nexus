@@ -4,6 +4,54 @@ metadata:
   name: nexus
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if .Values.sso.enabled }}
+  sso:
+    - name: Nexus Login
+      clientId: uds-swf-nexus
+      redirectUris:
+        - "https://nexus.{{ .Values.domain }}/callback?client_name=SAML2Client"
+      protocol: saml
+      defaultClientScopes:
+        - "mapper-saml-email-email"
+        - "mapper-saml-username-login"
+        - "mapper-saml-username-name"
+
+      attributes:
+        saml.client.signature: "false"
+
+      secretName: {{ .Values.sso.secretName }}
+      # Not sure how to fill this data. Also, heres the sso workflow in the nexus chart
+      # Expects all the sso config to be pre created and provided in the values
+      # Creates a config map with sso data with provided via the values
+      # Creates a job that pumps that data into nexus
+      # I think we will have to disable the sso logic in the nexus chart, create the client and secret here, and replicate the job here to pump this data into nexus?
+      secretTemplate:
+        idp-metadata: |
+          {
+            "entityId": "{{ base_url }}/service/rest/v1/security/saml/metadata",
+            "usernameAttribute": "username",
+            "firstNameAttribute": "firstName",
+            "lastNameAttribute": "lastName",
+            "emailAttribute": "email",
+            "groupsAttribute": "groups",
+            "validateResponseSignature": true,
+            "validateAssertionSignature": true,
+            "idpMetadata": "string"
+          }
+        realm: "NexusAuthenticatingRealm, NexusAuthorizingRealm, SamlRealm"
+        role: |
+          {
+            "id": "nexus",
+            "name": "nexus",
+            "description": "nexus group",
+            "privileges": [
+              "nx-all"
+            ],
+            "roles": [
+              "nx-admin"
+            ]
+          }
+  {{- end }}
   network:
     expose:
       - service: nexus-nexus-repository-manager
