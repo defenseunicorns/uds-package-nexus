@@ -23,19 +23,19 @@ variables:
     default: ""
     autoIndent: true
   - name: NEXUS_SSO_ENABLED
-    default: "false"
+    default: "true"
   - name: NEXUS_SSO_IDP_ENTITY_ID
-    default: ""
+    default: "uds-swf-nexus"
   - name: NEXUS_SSO_IDP_USERNAME_ATTRIBUTE
-    default: ""
+    default: "username"
   - name: NEXUS_SSO_IDP_FIRSTNAME_ATTRIBUTE
-    default: ""
+    default: "firstname"
   - name: NEXUS_SSO_IDP_LASTNAME_ATTRIBUTE
-    default: ""
+    default: "lastname"
   - name: NEXUS_SSO_IDP_EMAIL_ATTRIBUTE
-    default: ""
+    default: "email"
   - name: NEXUS_SSO_IDP_GROUPS_ATTRIBUTE
-    default: ""
+    default: "groups"
   - name: NEXUS_SSO_IDP_VALIDATE_RESPONSE_SIGNATURE
     default: "true"
   - name: NEXUS_SSO_IDP_VALIDATE_ASSERTION_SIGNATURE
@@ -60,6 +60,10 @@ components:
     only:
       flavor: registry1
     charts:
+      - name: uds-nexus-config
+        namespace: nexus
+        version: 0.1.0
+        localPath: chart
       # renovate: bb-chart
       - name: nexus
         url: https://repo1.dso.mil/big-bang/product/packages/nexus.git
@@ -68,10 +72,6 @@ components:
         namespace: nexus
         valuesFiles:
           - values/registry1-values.yaml
-      - name: uds-nexus-config
-        namespace: nexus
-        version: 0.1.0
-        localPath: chart
     images:
       - registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.3
       - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.66.0-02

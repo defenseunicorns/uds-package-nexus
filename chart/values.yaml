@@ -1,4 +1,4 @@
 domain: "###ZARF_VAR_DOMAIN###"
 sso:
   enabled: true
-  secretName: nexus-sso
+  # secretName: nexus-sso

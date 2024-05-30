@@ -27,6 +27,7 @@ packages:
     ref: 0.1.0
     exports:
       - name: NEXUS_DB_PASSWORD
+      - name: NEXUS_DB_USERNAME
 
   - name: nexus
     path: ../
@@ -35,6 +36,8 @@ packages:
     # x-release-please-end
     imports:
       - name: NEXUS_DB_PASSWORD
+        package: dev-secrets
+      - name: NEXUS_DB_USERNAME
         package: dev-secrets
     overrides:
       nexus:

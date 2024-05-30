@@ -47,6 +47,6 @@ sso:
     validateAssertionSignature: ###ZARF_VAR_NEXUS_SSO_IDP_VALIDATE_ASSERTION_SIGNATURE###
     idpMetadata: ###ZARF_VAR_NEXUS_SSO_IDP_METADATA###
   realm:
-    ###ZARF_VAR_NEXUS_SSO_REALM###
+    - "SamlRealm"
   role:
     ###ZARF_VAR_NEXUS_SSO_ROLE###
