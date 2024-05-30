@@ -7,17 +7,15 @@ spec:
   {{- if .Values.sso.enabled }}
   sso:
     - name: Nexus Login
-      # clientId: https://nexus.{{ .Values.domain }}/service/rest/v1/security/saml/metadata
-      # clientId: uds-swf-nexus
-      clientId: dummy-client
+      clientId: uds-swf-nexus
       redirectUris:
         - "https://nexus.{{ .Values.domain }}/saml"
       protocol: saml
       defaultClientScopes:
         - "mapper-saml-email-email"
         - "mapper-saml-username-login"
-        - "mapper-saml-firstName-first_name"
-        - "mapper-saml-lastName-last_name"
+        - "mapper-saml-firstname-first_name"
+        - "mapper-saml-lastname-last_name"
         - "mapper-saml-grouplist-groups"
 
       attributes:
