@@ -49,7 +49,7 @@ variables:
     default: "[]"
     autoIndent: true
   - name: NEXUS_VM_PARAMS
-    default: "-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
+    default: "-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
   - name: NEXUS_SECURITY_RANDOMPASSWORD
     default: "true"
 
@@ -67,11 +67,11 @@ components:
       # renovate: bb-chart
       - name: nexus
         url: https://repo1.dso.mil/big-bang/product/packages/nexus.git
-        version: "66.0.0-bb.0"
+        version: "68.1.0-bb.0"
         gitPath: chart
         namespace: nexus
         valuesFiles:
           - values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.3
-      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.66.0-02
+      - registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.4
+      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.68.1-02
