@@ -27,11 +27,11 @@ variables:
   - name: NEXUS_SSO_IDP_ENTITY_ID
     default: "uds-swf-nexus"
   - name: NEXUS_SSO_IDP_USERNAME_ATTRIBUTE
-    default: "username"
+    default: "login"
   - name: NEXUS_SSO_IDP_FIRSTNAME_ATTRIBUTE
-    default: "firstname"
+    default: "first_name"
   - name: NEXUS_SSO_IDP_LASTNAME_ATTRIBUTE
-    default: "lastname"
+    default: "last_name"
   - name: NEXUS_SSO_IDP_EMAIL_ATTRIBUTE
     default: "email"
   - name: NEXUS_SSO_IDP_GROUPS_ATTRIBUTE
