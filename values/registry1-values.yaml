@@ -47,6 +47,17 @@ sso:
     validateAssertionSignature: ###ZARF_VAR_NEXUS_SSO_IDP_VALIDATE_ASSERTION_SIGNATURE###
     idpMetadata: ###ZARF_VAR_NEXUS_SSO_IDP_METADATA###
   realm:
+    - "NexusAuthenticatingRealm"
     - "SamlRealm"
   role:
-    ###ZARF_VAR_NEXUS_SSO_ROLE###
+    - id: "nexus"
+      name: "nexus"
+      description: "nexus group"
+      privileges:
+        - "nx-all"
+      roles:
+        - "nx-admin"
+
+istio:
+  enabled: true
+  injection: enabled

@@ -25,7 +25,7 @@ variables:
   - name: NEXUS_SSO_ENABLED
     default: "true"
   - name: NEXUS_SSO_IDP_ENTITY_ID
-    default: "uds-swf-nexus"
+    default: "https://nexus"
   - name: NEXUS_SSO_IDP_USERNAME_ATTRIBUTE
     default: "login"
   - name: NEXUS_SSO_IDP_FIRSTNAME_ATTRIBUTE
@@ -39,15 +39,9 @@ variables:
   - name: NEXUS_SSO_IDP_VALIDATE_RESPONSE_SIGNATURE
     default: "true"
   - name: NEXUS_SSO_IDP_VALIDATE_ASSERTION_SIGNATURE
-    default: "true"
+    default: "false"
   - name: NEXUS_SSO_IDP_METADATA
     default: ''
-  - name: NEXUS_SSO_REALM
-    default: "[]"
-    autoIndent: true
-  - name: NEXUS_SSO_ROLE
-    default: "[]"
-    autoIndent: true
   - name: NEXUS_VM_PARAMS
     default: "-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
   - name: NEXUS_SECURITY_RANDOMPASSWORD

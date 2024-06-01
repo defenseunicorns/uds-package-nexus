@@ -30,6 +30,12 @@ spec:
         host: nexus
         port: 8081
     allow:
+      - direction: Ingress
+        remoteGenerated: IntraNamespace
+
+      - direction: Egress
+        remoteGenerated: IntraNamespace
+
       - direction: Egress
         podLabels:
           app: nexus-repository-manager
