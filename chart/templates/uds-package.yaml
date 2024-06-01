@@ -7,6 +7,8 @@ spec:
   {{- if .Values.sso.enabled }}
   sso:
     - name: Nexus Login
+      # Needs to be a URI. Client creation bug that wont allow this needs fixed. Issue in uds-core
+      #clientId: https://nexus
       clientId: uds-swf-nexus
       redirectUris:
         - "https://nexus.{{ .Values.domain }}/saml"
