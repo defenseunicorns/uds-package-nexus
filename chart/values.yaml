@@ -1,3 +1,7 @@
 domain: "###ZARF_VAR_DOMAIN###"
 sso:
-  enabled: false
+  enabled: true
+  # Replace with https://nexus to match what nexus is using once UDS bug is fixed.
+  # For now you will have to go into Keycloak and update the client manually to match
+  # the URI used in Nexus
+  clientId: replace-me-with-nexus-entity-uri

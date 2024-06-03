@@ -23,9 +23,7 @@ variables:
     default: ""
     autoIndent: true
   - name: NEXUS_SSO_ENABLED
-    default: "true"
-  - name: NEXUS_SSO_IDP_ENTITY_ID
-    default: "https://nexus"
+    default: "false"
   - name: NEXUS_SSO_IDP_USERNAME_ATTRIBUTE
     default: "login"
   - name: NEXUS_SSO_IDP_FIRSTNAME_ATTRIBUTE
@@ -48,6 +46,20 @@ variables:
     default: "true"
 
 components:
+  - name: keycloak-idp-metadata
+    required: true
+    description: "Retrieve Keycloak IDP Metadata"
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              if [ "${ZARF_VAR_NEXUS_SSO_ENABLED}" = "true" ]; then
+                curl https://sso.${ZARF_VAR_DOMAIN}/realms/uds/protocol/saml/descriptor
+              fi
+            mute: true
+            setVariables:
+              - name: NEXUS_SSO_IDP_METADATA
+
   - name: nexus
     required: true
     description: "Deploy nexus"

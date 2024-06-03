@@ -29,12 +29,6 @@ packages:
       - name: NEXUS_DB_PASSWORD
       - name: NEXUS_DB_USERNAME
 
-  - name: nexus-sso-idp-metadata
-    path: ../
-    ref: 0.1.0
-    exports:
-      - name: NEXUS_SSO_IDP_METADATA
-
   - name: nexus
     path: ../
     # x-release-please-start-version
@@ -45,8 +39,6 @@ packages:
         package: dev-secrets
       - name: NEXUS_DB_USERNAME
         package: dev-secrets
-      - name: NEXUS_SSO_IDP_METADATA
-        package: nexus-sso-idp-metadata
     overrides:
       nexus:
         nexus:
@@ -59,3 +51,7 @@ packages:
               value: "500m"
             - path: "nexus.resources.limits.memory"
               value: "2Gi"
+        uds-nexus-config:
+          variables:
+            - path: "sso.enabled"
+              name: NEXUS_SSO_ENABLED
