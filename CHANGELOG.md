@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.68.0-uds.0](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.66.0-uds.1...v3.68.0-uds.0) (2024-06-04)
+
+
+### Features
+
+* configure for sso integration ([#13](https://github.com/defenseunicorns/uds-package-nexus/issues/13)) ([eb6de83](https://github.com/defenseunicorns/uds-package-nexus/commit/eb6de83b02cd3916b651e55c28bd9f18284b320a))
+
+
+### Miscellaneous
+
+* nexus package updates and cleanup ([#11](https://github.com/defenseunicorns/uds-package-nexus/issues/11)) ([91f94ab](https://github.com/defenseunicorns/uds-package-nexus/commit/91f94ab8e11dfb762956c7b9bbd07057de508a82))
+* release 3.68.0-uds.0 ([d56431a](https://github.com/defenseunicorns/uds-package-nexus/commit/d56431a9b1fa7a9abfd0d69d2ab1f3ffda96be42))
+* update to 68.1.0-bb.0 ([eb6de83](https://github.com/defenseunicorns/uds-package-nexus/commit/eb6de83b02cd3916b651e55c28bd9f18284b320a))
+
 ## [3.66.0-uds.1](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.66.0-uds.0...v3.66.0-uds.1) (2024-04-05)
 
 
