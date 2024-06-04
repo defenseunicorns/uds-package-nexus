@@ -20,10 +20,11 @@ Bigbang [Nexus Repository Manager](https://repo1.dso.mil/big-bang/product/packag
 - The database user has read/write access to the above mentioned database
 
 #### Pro License
-- You must provide a valid Nexus license to use the external DB configuration. If a license is not provided Nexus will default to the OSS version and will use an internal H2 DB.
-- Provide your license via the Zarf deploy time variable `NEXUS_LICENSE_KEY`.
+- Provide your base64 encoded license file via the Zarf deploy time variable `NEXUS_LICENSE_KEY`.
+- External DB configuration requires a valid Nexus license to use the external DB configuration. If a license is not provided Nexus will default to the OSS version and will use an internal H2 DB.
+- SSO requires a valid Nexus License. With a valid license you can enable SSO via the Zarf deploy time variable `NEXUS_SSO_ENABLED`
 
 #### NEXUS_VM_PARAMS
 - This package provides the same default as the upstream registry1 chart. You may need to update these to your needs.
 
-`-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Djava.util.prefs.userRoot=/nexus-data/javaprefs`
+`-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -Djava.util.prefs.userRoot=/nexus-data/javaprefs`
