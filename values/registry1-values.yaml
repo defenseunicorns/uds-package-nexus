@@ -37,7 +37,8 @@ license_key: |
 sso:
   enabled: ###ZARF_VAR_NEXUS_SSO_ENABLED###
   idp_data:
-    entityId: ###ZARF_VAR_NEXUS_SSO_IDP_ENTITY_ID###
+    # Has to be a URI
+    entityId: "https://nexus"
     usernameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_USERNAME_ATTRIBUTE###
     firstNameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_FIRSTNAME_ATTRIBUTE###
     lastNameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_LASTNAME_ATTRIBUTE###
@@ -47,6 +48,17 @@ sso:
     validateAssertionSignature: ###ZARF_VAR_NEXUS_SSO_IDP_VALIDATE_ASSERTION_SIGNATURE###
     idpMetadata: ###ZARF_VAR_NEXUS_SSO_IDP_METADATA###
   realm:
-    ###ZARF_VAR_NEXUS_SSO_REALM###
+    - "NexusAuthenticatingRealm"
+    - "SamlRealm"
   role:
-    ###ZARF_VAR_NEXUS_SSO_ROLE###
+    - id: "nexus"
+      name: "nexus"
+      description: "nexus group"
+      privileges:
+        - "nx-all"
+      roles:
+        - "nx-admin"
+
+istio:
+  enabled: true
+  injection: enabled

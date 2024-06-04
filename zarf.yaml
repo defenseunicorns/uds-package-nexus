@@ -24,54 +24,109 @@ variables:
     autoIndent: true
   - name: NEXUS_SSO_ENABLED
     default: "false"
-  - name: NEXUS_SSO_IDP_ENTITY_ID
-    default: ""
   - name: NEXUS_SSO_IDP_USERNAME_ATTRIBUTE
-    default: ""
+    default: "login"
   - name: NEXUS_SSO_IDP_FIRSTNAME_ATTRIBUTE
-    default: ""
+    default: "first_name"
   - name: NEXUS_SSO_IDP_LASTNAME_ATTRIBUTE
-    default: ""
+    default: "last_name"
   - name: NEXUS_SSO_IDP_EMAIL_ATTRIBUTE
-    default: ""
+    default: "email"
   - name: NEXUS_SSO_IDP_GROUPS_ATTRIBUTE
-    default: ""
+    default: "groups"
   - name: NEXUS_SSO_IDP_VALIDATE_RESPONSE_SIGNATURE
     default: "true"
   - name: NEXUS_SSO_IDP_VALIDATE_ASSERTION_SIGNATURE
-    default: "true"
+    default: "false"
   - name: NEXUS_SSO_IDP_METADATA
     default: ''
-  - name: NEXUS_SSO_REALM
-    default: "[]"
-    autoIndent: true
-  - name: NEXUS_SSO_ROLE
-    default: "[]"
-    autoIndent: true
   - name: NEXUS_VM_PARAMS
-    default: "-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
+    default: "-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
   - name: NEXUS_SECURITY_RANDOMPASSWORD
     default: "true"
 
 components:
+  - name: keycloak-idp-metadata
+    required: true
+    description: "Retrieve Keycloak IDP Metadata"
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              if [ "${ZARF_VAR_NEXUS_SSO_ENABLED}" = "true" ]; then
+                curl https://sso.${ZARF_VAR_DOMAIN}/realms/uds/protocol/saml/descriptor
+              fi
+            mute: true
+            setVariables:
+              - name: NEXUS_SSO_IDP_METADATA
+
   - name: nexus
     required: true
     description: "Deploy nexus"
     only:
       flavor: registry1
     charts:
-      # renovate: bb-chart
-      - name: nexus
-        url: https://repo1.dso.mil/big-bang/product/packages/nexus.git
-        version: "66.0.0-bb.0"
-        gitPath: chart
-        namespace: nexus
-        valuesFiles:
-          - values/registry1-values.yaml
       - name: uds-nexus-config
         namespace: nexus
         version: 0.1.0
         localPath: chart
+      # renovate: bb-chart
+      - name: nexus
+        url: https://repo1.dso.mil/big-bang/product/packages/nexus.git
+        version: "68.1.0-bb.0"
+        gitPath: chart
+        namespace: nexus
+        valuesFiles:
+          - values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.3
-      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.66.0-02
+      - registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.4
+      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.68.1-02
+
+  - name: keycloak-client-id-patch
+    required: true
+    description: "Patch Keycloak clientId"
+    actions:
+      onDeploy:
+        after:
+          - cmd: |
+              if [ "${ZARF_VAR_NEXUS_SSO_ENABLED}" = "true" ]; then
+                echo "Fixing client id..."
+
+                KEYCLOAK_URL="https://keycloak.admin.${ZARF_VAR_DOMAIN}"
+                OLD_CLIENT_ID="replace-me-with-nexus-entity-uri"
+                NEW_CLIENT_ID="https://nexus"
+                REALM="uds"
+
+                # Get access token
+                KEYCLOAK_ADMIN_PASSWORD=$(./zarf tools kubectl get secret -n keycloak keycloak-admin-password -o jsonpath={.data.password} | base64 -d)
+                KEYCLOAK_ADMIN_TOKEN=$(curl -s --location "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
+                  --header "Content-Type: application/x-www-form-urlencoded" \
+                  --data-urlencode "username=admin" \
+                  --data-urlencode "password=${KEYCLOAK_ADMIN_PASSWORD}" \
+                  --data-urlencode "client_id=admin-cli" \
+                  --data-urlencode "grant_type=password" | ./zarf tools yq .access_token)
+
+                # Find client UUID
+                CLIENT_UUID=$(curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${REALM}/clients" \
+                  -H "Authorization: Bearer ${KEYCLOAK_ADMIN_TOKEN}" \
+                  -H "Content-Type: application/json" | ./zarf tools yq e '.[] | select(.clientId == "'"${OLD_CLIENT_ID}"'") | .id' -)
+
+                # Verify that CLIENT_UUID is not empty
+                if [ "${CLIENT_UUID}" = "" ]; then
+                  echo "Client not found, probably already fixed, skipping update"
+                  exit 0
+                fi
+
+                # Update client
+                curl -s -X PUT "${KEYCLOAK_URL}/admin/realms/${REALM}/clients/${CLIENT_UUID}" \
+                  -H "Authorization: Bearer ${KEYCLOAK_ADMIN_TOKEN}" \
+                  -H "Content-Type: application/json" \
+                  --data-raw '{
+                  "clientId": "'"${NEW_CLIENT_ID}"'",
+                  "attributes": {}
+                  }'
+
+                echo "Client id update complete"
+              else
+                echo "SSO is not enabled, skipping client id update"
+              fi

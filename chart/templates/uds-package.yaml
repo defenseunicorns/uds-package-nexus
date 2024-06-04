@@ -4,6 +4,24 @@ metadata:
   name: nexus
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if .Values.sso.enabled }}
+  sso:
+    - name: Nexus Login
+      clientId: {{ .Values.sso.clientId }}
+      redirectUris:
+        - "https://nexus.{{ .Values.domain }}/saml"
+      protocol: saml
+      defaultClientScopes:
+        - "mapper-saml-email-email"
+        - "mapper-saml-username-login"
+        - "mapper-saml-firstname-first_name"
+        - "mapper-saml-lastname-last_name"
+        - "mapper-saml-grouplist-groups"
+
+      attributes:
+        saml.client.signature: "false"
+        saml_assertion_consumer_url_post: "https://nexus.{{ .Values.domain }}/saml"
+  {{- end }}
   network:
     expose:
       - service: nexus-nexus-repository-manager
@@ -13,7 +31,30 @@ spec:
         host: nexus
         port: 8081
     allow:
+      - direction: Ingress
+        remoteGenerated: IntraNamespace
+
+      - direction: Egress
+        remoteGenerated: IntraNamespace
+
       - direction: Egress
         podLabels:
-          app: nexus
+          app: nexus-repository-manager
         remoteGenerated: Anywhere
+
+      - direction: Egress
+        remoteNamespace: keycloak
+        remoteSelector:
+          app.kubernetes.io/name: keycloak
+        selector:
+          app: nexus-repository-manager
+        port: 8080
+        description: "SSO Internal"
+
+      - direction: Egress
+        remoteGenerated: Anywhere
+        selector:
+          app: nexus-repository-manager
+        port: 443
+        description: "SSO External"
+

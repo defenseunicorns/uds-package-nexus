@@ -16,4 +16,7 @@ variables:
       ingress:
         remoteGenerated: Anywhere
   nexus:
-    nexus_db_endpoint: "postgresql.dev-postgres.svc.cluster.local"
+    NEXUS_DB_ENDPOINT: "pg-cluster.postgres.svc.cluster.local"
+    # SSO requires a license
+    NEXUS_SSO_ENABLED: false
+    NEXUS_LICENSE_KEY: ""
