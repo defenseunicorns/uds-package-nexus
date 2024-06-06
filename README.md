@@ -28,3 +28,10 @@ Bigbang [Nexus Repository Manager](https://repo1.dso.mil/big-bang/product/packag
 - This package provides the same default as the upstream registry1 chart. You may need to update these to your needs.
 
 `-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -Djava.util.prefs.userRoot=/nexus-data/javaprefs`
+
+#### Additional Notes
+##### Access Control
+- Information about configuring access controls and related topics such as realms, privileges, roles, default roles, ect can be found [here](https://help.sonatype.com/en/access-control.html#related-topics)
+##### Disconnected Environments
+- When deploying in a disconnected environment, you will want to disable the outreach management capability.
+![outreach-settings](docs/images/outreach-management-settings.png)
