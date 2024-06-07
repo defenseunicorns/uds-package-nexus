@@ -4,3 +4,4 @@ sso:
   # Replace with https://nexus to match what nexus is using once UDS bug is fixed.
   # This package replaces this automatically on deployment
   clientId: replace-me-with-nexus-entity-uri
+additionalNetworkExposures: []

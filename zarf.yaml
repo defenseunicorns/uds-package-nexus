@@ -44,6 +44,7 @@ variables:
     default: "-Dcom.redhat.fips=false -Xms2703M -Xmx2703M -XX:MaxDirectMemorySize=2703M -XX:+UnlockExperimentalVMOptions -XX:+UseContainerSupport -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
   - name: NEXUS_SECURITY_RANDOMPASSWORD
     default: "true"
+  - name: ADDITIONAL_CA_CHAIN
 
 components:
   - name: keycloak-idp-metadata
@@ -54,7 +55,12 @@ components:
         before:
           - cmd: |
               if [ "${ZARF_VAR_NEXUS_SSO_ENABLED}" = "true" ]; then
-                curl https://sso.${ZARF_VAR_DOMAIN}/realms/uds/protocol/saml/descriptor
+                if [ -z "${ZARF_VAR_ADDITIONAL_CA_CHAIN}" ]; then
+                  curl https://sso.${ZARF_VAR_DOMAIN}/realms/uds/protocol/saml/descriptor
+                else
+                  echo "${ZARF_VAR_ADDITIONAL_CA_CHAIN}" | base64 --decode > /tmp/ca_cert.crt
+                  curl --cacert /tmp/ca_cert.crt https://sso.${ZARF_VAR_DOMAIN}/realms/uds/protocol/saml/descriptor
+                fi
               fi
             mute: true
             setVariables:

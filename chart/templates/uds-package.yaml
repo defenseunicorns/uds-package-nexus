@@ -25,11 +25,14 @@ spec:
   network:
     expose:
       - service: nexus-nexus-repository-manager
-        podLabels:
+        selector:
           app: nexus-repository-manager
         gateway: tenant
         host: nexus
         port: 8081
+      {{ if .Values.additionalNetworkExposures }}
+      {{- toYaml .Values.additionalNetworkExposures | nindent 6 }}
+      {{- end }}
     allow:
       - direction: Ingress
         remoteGenerated: IntraNamespace
