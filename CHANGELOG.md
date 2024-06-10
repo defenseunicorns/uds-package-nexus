@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.68.0-uds.1](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.68.0-uds.0...v3.68.0-uds.1) (2024-06-10)
+
+
+### Features
+
+* add additional expose template ([a03ba4c](https://github.com/defenseunicorns/uds-package-nexus/commit/a03ba4caf7ce9450b2693efca0dde38c3cb57e99))
+* additional ca cert chain var ([#14](https://github.com/defenseunicorns/uds-package-nexus/issues/14)) ([a03ba4c](https://github.com/defenseunicorns/uds-package-nexus/commit/a03ba4caf7ce9450b2693efca0dde38c3cb57e99))
+
 ## [3.68.0-uds.0](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.66.0-uds.1...v3.68.0-uds.0) (2024-06-04)
 
 
