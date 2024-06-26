@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.68.0-uds.2](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.68.0-uds.1...v3.68.0-uds.2) (2024-06-26)
+
+
+### Bug Fixes
+
+* add wait for package creation ([#16](https://github.com/defenseunicorns/uds-package-nexus/issues/16)) ([946d431](https://github.com/defenseunicorns/uds-package-nexus/commit/946d4311281dda43fe8e64859078498a96abad35))
+
 ## [3.68.0-uds.1](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.68.0-uds.0...v3.68.0-uds.1) (2024-06-10)
 
 
