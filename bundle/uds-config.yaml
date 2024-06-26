@@ -1,5 +1,7 @@
 options:
   log_level: info
+shared:
+  DOMAIN: uds.dev
 variables:
   postgres-operator:
     postgresql:
