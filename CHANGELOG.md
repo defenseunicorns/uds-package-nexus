@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.68.0-uds.3](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.68.0-uds.2...v3.68.0-uds.3) (2024-06-27)
+
+
+### Bug Fixes
+
+* update default role and realm for uds ([#18](https://github.com/defenseunicorns/uds-package-nexus/issues/18)) ([19e1d09](https://github.com/defenseunicorns/uds-package-nexus/commit/19e1d09b12685b14cc0aa5e3961f33cf41d211d8))
+
 ## [3.68.0-uds.2](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.68.0-uds.1...v3.68.0-uds.2) (2024-06-26)
 
 
