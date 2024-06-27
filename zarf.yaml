@@ -4,7 +4,7 @@ metadata:
   name: nexus
   description: "UDS Nexus package"
   # x-release-please-start-version
-  version: "3.68.0-uds.2"
+  version: "3.68.0-uds.3"
   # x-release-please-end
   architecture: amd64
 
