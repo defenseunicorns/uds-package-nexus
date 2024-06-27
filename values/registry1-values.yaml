@@ -50,14 +50,11 @@ sso:
   realm:
     - "NexusAuthenticatingRealm"
     - "SamlRealm"
-    - "DefaultRole"
     - "User-Token-Realm"
   role:
-    - id: "nexus"
-      name: "nexus"
-      description: "nexus group"
-      privileges:
-        - "nx-all"
+    - id: "/UDS Core/Admin"
+      name: "nexus-admin"
+      description: "nexus admin role"
       roles:
         - "nx-admin"
 
