@@ -9,9 +9,6 @@ image:
 job_image:
   pullPolicy: IfNotPresent
 
-# External database
-custom_admin_password: ###ZARF_VAR_NEXUS_DB_PASSWORD###
-
 nexus:
   imagePullSecrets:
     - name: private-registry
