@@ -117,6 +117,8 @@ components:
                 echo "Fixing client id..."
 
                 if [ -z "${ZARF_VAR_ADDITIONAL_CA_CHAIN}" ]; then
+                  echo "No additional CA chain provided"
+
                   # Get access token
                   KEYCLOAK_ADMIN_TOKEN=$(curl -s --location "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
                     --header "Content-Type: application/x-www-form-urlencoded" \
@@ -146,7 +148,7 @@ components:
                     }'
                 else
 
-                  # Use additional CA chain
+                  echo "Using provided additional CA chain"
                   echo "${ZARF_VAR_ADDITIONAL_CA_CHAIN}" | base64 -d > /tmp/ca_cert.crt
 
                   # Get access token
