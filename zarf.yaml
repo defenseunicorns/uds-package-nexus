@@ -79,7 +79,7 @@ components:
       # renovate: bb-chart
       - name: nexus
         url: https://repo1.dso.mil/big-bang/product/packages/nexus.git
-        version: "68.1.0-bb.0"
+        version: "69.0.0-bb.1"
         gitPath: chart
         namespace: nexus
         valuesFiles:
@@ -97,7 +97,7 @@ components:
                 condition: "'{.status.phase}'=Ready"
     images:
       - registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.4
-      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.68.1-02
+      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.69.0-02
 
   - name: keycloak-client-id-patch
     required: true
