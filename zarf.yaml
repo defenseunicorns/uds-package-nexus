@@ -107,41 +107,76 @@ components:
         after:
           - cmd: |
               if [ "${ZARF_VAR_NEXUS_SSO_ENABLED}" = "true" ]; then
-                echo "Fixing client id..."
 
                 KEYCLOAK_URL="https://keycloak.admin.${ZARF_VAR_DOMAIN}"
                 OLD_CLIENT_ID="replace-me-with-nexus-entity-uri"
                 NEW_CLIENT_ID="https://nexus"
                 REALM="uds"
-
-                # Get access token
                 KEYCLOAK_ADMIN_PASSWORD=$(./zarf tools kubectl get secret -n keycloak keycloak-admin-password -o jsonpath={.data.password} | base64 -d)
-                KEYCLOAK_ADMIN_TOKEN=$(curl -s --location "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
-                  --header "Content-Type: application/x-www-form-urlencoded" \
-                  --data-urlencode "username=admin" \
-                  --data-urlencode "password=${KEYCLOAK_ADMIN_PASSWORD}" \
-                  --data-urlencode "client_id=admin-cli" \
-                  --data-urlencode "grant_type=password" | ./zarf tools yq .access_token)
 
-                # Find client UUID
-                CLIENT_UUID=$(curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${REALM}/clients" \
-                  -H "Authorization: Bearer ${KEYCLOAK_ADMIN_TOKEN}" \
-                  -H "Content-Type: application/json" | ./zarf tools yq e '.[] | select(.clientId == "'"${OLD_CLIENT_ID}"'") | .id' -)
+                echo "Fixing client id..."
 
-                # Verify that CLIENT_UUID is not empty
-                if [ "${CLIENT_UUID}" = "" ]; then
-                  echo "Client not found, probably already fixed, skipping update"
-                  exit 0
+                if [ -z "${ZARF_VAR_ADDITIONAL_CA_CHAIN}" ]; then
+                  # Get access token
+                  KEYCLOAK_ADMIN_TOKEN=$(curl -s --location "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
+                    --header "Content-Type: application/x-www-form-urlencoded" \
+                    --data-urlencode "username=admin" \
+                    --data-urlencode "password=${KEYCLOAK_ADMIN_PASSWORD}" \
+                    --data-urlencode "client_id=admin-cli" \
+                    --data-urlencode "grant_type=password" | ./zarf tools yq .access_token)
+
+                  # Find client UUID
+                  CLIENT_UUID=$(curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${REALM}/clients" \
+                    -H "Authorization: Bearer ${KEYCLOAK_ADMIN_TOKEN}" \
+                    -H "Content-Type: application/json" | ./zarf tools yq e '.[] | select(.clientId == "'"${OLD_CLIENT_ID}"'") | .id' -)
+
+                  # Verify that CLIENT_UUID is not empty
+                  if [ "${CLIENT_UUID}" = "" ]; then
+                    echo "Client not found, probably already fixed, skipping update"
+                    exit 0
+                  fi
+
+                  # Update client
+                  curl -s -X PUT "${KEYCLOAK_URL}/admin/realms/${REALM}/clients/${CLIENT_UUID}" \
+                    -H "Authorization: Bearer ${KEYCLOAK_ADMIN_TOKEN}" \
+                    -H "Content-Type: application/json" \
+                    --data-raw '{
+                    "clientId": "'"${NEW_CLIENT_ID}"'",
+                    "attributes": {}
+                    }'
+                else
+
+                  # Use additional CA chain
+                  echo "${ZARF_VAR_ADDITIONAL_CA_CHAIN}" | base64 -d > /tmp/ca_cert.crt
+
+                  # Get access token
+                  KEYCLOAK_ADMIN_TOKEN=$(curl --cacert /tmp/ca_cert.crt -s --location "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
+                    --header "Content-Type: application/x-www-form-urlencoded" \
+                    --data-urlencode "username=admin" \
+                    --data-urlencode "password=${KEYCLOAK_ADMIN_PASSWORD}" \
+                    --data-urlencode "client_id=admin-cli" \
+                    --data-urlencode "grant_type=password" | ./zarf tools yq .access_token)
+
+                  # Find client UUID
+                  CLIENT_UUID=$(curl --cacert /tmp/ca_cert.crt -s -X GET "${KEYCLOAK_URL}/admin/realms/${REALM}/clients" \
+                    -H "Authorization: Bearer ${KEYCLOAK_ADMIN_TOKEN}" \
+                    -H "Content-Type: application/json" | ./zarf tools yq e '.[] | select(.clientId == "'"${OLD_CLIENT_ID}"'") | .id' -)
+
+                  # Verify that CLIENT_UUID is not empty
+                  if [ "${CLIENT_UUID}" = "" ]; then
+                    echo "Client not found, probably already fixed, skipping update"
+                    exit 0
+                  fi
+
+                  # Update client
+                  curl --cacert /tmp/ca_cert.crt -s -X PUT "${KEYCLOAK_URL}/admin/realms/${REALM}/clients/${CLIENT_UUID}" \
+                    -H "Authorization: Bearer ${KEYCLOAK_ADMIN_TOKEN}" \
+                    -H "Content-Type: application/json" \
+                    --data-raw '{
+                    "clientId": "'"${NEW_CLIENT_ID}"'",
+                    "attributes": {}
+                    }'
                 fi
-
-                # Update client
-                curl -s -X PUT "${KEYCLOAK_URL}/admin/realms/${REALM}/clients/${CLIENT_UUID}" \
-                  -H "Authorization: Bearer ${KEYCLOAK_ADMIN_TOKEN}" \
-                  -H "Content-Type: application/json" \
-                  --data-raw '{
-                  "clientId": "'"${NEW_CLIENT_ID}"'",
-                  "attributes": {}
-                  }'
 
                 echo "Client id update complete"
               else
