@@ -1,7 +1,6 @@
 domain: "###ZARF_VAR_DOMAIN###"
 sso:
   enabled: false
-  # Replace with https://nexus to match what nexus is using once UDS bug is fixed.
-  # This package replaces this automatically on deployment
-  clientId: replace-me-with-nexus-entity-uri
+  # Nexus client ID must be a URI. Using this format does the trick
+  clientId: "uds:nexus"
 additionalNetworkExposures: []
