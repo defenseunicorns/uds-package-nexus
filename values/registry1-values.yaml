@@ -34,8 +34,8 @@ license_key: |
 sso:
   enabled: ###ZARF_VAR_NEXUS_SSO_ENABLED###
   idp_data:
-    # Has to be a URI
-    entityId: "https://nexus"
+    # Nexus entity ID must be a URI. Using this format does the trick
+    entityId: "uds:nexus"
     usernameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_USERNAME_ATTRIBUTE###
     firstNameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_FIRSTNAME_ATTRIBUTE###
     lastNameAttribute: ###ZARF_VAR_NEXUS_SSO_IDP_LASTNAME_ATTRIBUTE###

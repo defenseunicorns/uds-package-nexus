@@ -8,6 +8,7 @@ spec:
   sso:
     - name: Nexus Login
       clientId: {{ .Values.sso.clientId }}
+      secretName: "nexus-sso-secret"
       redirectUris:
         - "https://nexus.{{ .Values.domain }}/saml"
       protocol: saml
