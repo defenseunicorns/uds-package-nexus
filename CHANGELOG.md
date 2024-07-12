@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.69.0-uds.0](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.68.0-uds.3...v3.69.0-uds.0) (2024-07-12)
+
+
+### Bug Fixes
+
+* improve clientID usage ([6788a04](https://github.com/defenseunicorns/uds-package-nexus/commit/6788a0478f9aa73210815dac5c98ff1b07c1e1ce))
+* remove custom_admin_password to allow random admin password generation ([6788a04](https://github.com/defenseunicorns/uds-package-nexus/commit/6788a0478f9aa73210815dac5c98ff1b07c1e1ce))
+
+
+### Miscellaneous
+
+* release 3.69.0-uds.0 ([8ca331b](https://github.com/defenseunicorns/uds-package-nexus/commit/8ca331b1e382e811eb6663f589bb1d7fdc2d355a))
+* update common uds task versions ([6788a04](https://github.com/defenseunicorns/uds-package-nexus/commit/6788a0478f9aa73210815dac5c98ff1b07c1e1ce))
+* upgrade to 69.0.0-bb.1 ([6788a04](https://github.com/defenseunicorns/uds-package-nexus/commit/6788a0478f9aa73210815dac5c98ff1b07c1e1ce))
+
 ## [3.68.0-uds.3](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.68.0-uds.2...v3.68.0-uds.3) (2024-06-27)
 
 
