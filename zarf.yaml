@@ -78,5 +78,18 @@ components:
         valuesFiles:
           - values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/redhat/ubi/ubi9-minimal:9.4
       - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.69.0-02
+
+  - name: nexus
+    required: true
+    description: "Deploy nexus"
+    import:
+      path: common
+    only:
+      flavor: upstream
+    charts:
+      - name: nexus
+        valuesFiles:
+          - values/upstream-values.yaml
+    images:
+      - sonatype/nexus3:3.69.0
