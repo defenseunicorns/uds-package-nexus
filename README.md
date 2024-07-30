@@ -1,15 +1,10 @@
-# uds-package-nexus
+# 🚚 uds-package-nexus
 UDS Nexus Zarf Package
 
 # uds-capability-nexus
 Bigbang [Nexus Repository Manager](https://repo1.dso.mil/big-bang/product/packages/nexus)
 
 ## Deployment Prerequisites
-
-#### General
-
-- Create `nexus` namespace
-- Label `nexus` namespace with `istio-injection: enabled`
 
 #### Database
 
