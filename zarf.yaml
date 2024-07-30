@@ -78,7 +78,7 @@ components:
         valuesFiles:
           - values/registry1-values.yaml
     images:
-      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.69.0-02
+      - registry1.dso.mil/ironbank/sonatype/nexus/nexus:3.70.1-02
 
   - name: nexus
     required: true
@@ -92,4 +92,4 @@ components:
         valuesFiles:
           - values/upstream-values.yaml
     images:
-      - sonatype/nexus3:3.69.0
+      - sonatype/nexus3:3.70.1

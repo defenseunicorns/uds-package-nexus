@@ -15,7 +15,7 @@ components:
       # renovate: bb-chart
       - name: nexus
         url: https://repo1.dso.mil/big-bang/product/packages/nexus.git
-        version: "69.0.0-bb.1"
+        version: "70.1.0-bb.0"
         gitPath: chart
         namespace: nexus
         valuesFiles:
