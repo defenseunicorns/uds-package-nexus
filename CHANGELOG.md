@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.70.1-uds.0](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.69.0-uds.0...v3.70.1-uds.0) (2024-08-02)
+
+
+### Features
+
+* add upstream flavor ([8a3daf9](https://github.com/defenseunicorns/uds-package-nexus/commit/8a3daf9de3671f4c25e8aea6d7c1b853927c1915))
+
+
+### Miscellaneous
+
+* release 3.70.1-uds.0 ([7499697](https://github.com/defenseunicorns/uds-package-nexus/commit/7499697cd25a581da2de2f95fef812214900b637))
+* update to common zarf pattern ([#23](https://github.com/defenseunicorns/uds-package-nexus/issues/23)) ([8a3daf9](https://github.com/defenseunicorns/uds-package-nexus/commit/8a3daf9de3671f4c25e8aea6d7c1b853927c1915))
+* update uds-common tasks to v0.10.0 ([8a3daf9](https://github.com/defenseunicorns/uds-package-nexus/commit/8a3daf9de3671f4c25e8aea6d7c1b853927c1915))
+* upgrade nexus to version 3.70.1 ([8a3daf9](https://github.com/defenseunicorns/uds-package-nexus/commit/8a3daf9de3671f4c25e8aea6d7c1b853927c1915))
+
 ## [3.69.0-uds.0](https://github.com/defenseunicorns/uds-package-nexus/compare/v3.68.0-uds.3...v3.69.0-uds.0) (2024-07-12)
 
 
